@@ -1560,7 +1560,7 @@ test.describe('Module 13 – Razorpay Payment Gateway', () => {
         await rzpLabel.scrollIntoViewIfNeeded();
         await rzpLabel.click();
         await page.waitForTimeout(ANIM_WAIT);
-      } else if (await rzpRadio.isAttached().catch(() => false)) {
+      } else if (await rzpRadio.count() > 0) {
         await rzpRadio.check({ force: true });
         await page.waitForTimeout(ANIM_WAIT);
       }

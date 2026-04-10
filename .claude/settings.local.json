@@ -12,7 +12,9 @@
       "Bash(curl -s https://veztra.in/)",
       "Bash(grep -oE \"›.*$\")",
       "Bash(grep desktop-chrome.*failed)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
