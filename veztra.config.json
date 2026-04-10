@@ -1,0 +1,50 @@
+{
+  "_comment": "Veztra Playwright Test Suite — Edit this file to configure your test run",
+
+  "baseUrl": "https://veztra.in",
+
+  "testUser": {
+    "_comment": "Registered account credentials for auth & order-history tests (leave blank to skip those tests)",
+    "email": "",
+    "password": ""
+  },
+
+  "guestCheckout": {
+    "_comment": "Billing details used for the guest-checkout end-to-end test",
+    "firstName": "Test",
+    "lastName":  "User",
+    "email":     "guest.playwright@mailinator.com",
+    "phone":     "9876543210",
+    "address1":  "456 Automation Lane",
+    "address2":  "",
+    "city":      "Mumbai",
+    "state":     "MH",
+    "postcode":  "400001",
+    "country":   "IN"
+  },
+
+  "products": {
+    "_comment": "List of product page URLs to run product-detail tests against. Leave 'urls' as [] to auto-scrape from the shop page (requires 'scrapeProductsFromShop: true').",
+    "scrapeProductsFromShop": true,
+    "urls": []
+  },
+
+  "mobileViewport": {
+    "_comment": "Viewport used for all mobile-view tests",
+    "width":  375,
+    "height": 812
+  },
+
+  "timeouts": {
+    "_comment": "All values in milliseconds",
+    "navigation":    30000,
+    "cartUpdate":     3000,
+    "animationSettle": 1500
+  },
+
+  "retries": {
+    "_comment": "Number of retries on flaky tests (CI typically uses 2)",
+    "local": 1,
+    "ci":    2
+  }
+}

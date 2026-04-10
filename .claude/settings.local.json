@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python -c \":*)",
+      "Bash(\"/c/Users/Administrator/AppData/Local/Programs/Python/Python313/Scripts/pip.exe\" install:*)",
+      "WebFetch(domain:veztra.in)",
+      "Bash(curl -s https://veztra.in/shop/)",
+      "Bash(npx playwright:*)",
+      "Bash(curl -s https://veztra.in/my-account/)",
+      "Bash(curl -s https://veztra.in/product/golden-top/)",
+      "Bash(curl -s https://veztra.in/)",
+      "Bash(grep -oE \"›.*$\")",
+      "Bash(grep desktop-chrome.*failed)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}
