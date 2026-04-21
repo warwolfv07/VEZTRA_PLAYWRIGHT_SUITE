@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug All Tests (headed)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["playwright", "test", "--headed", "--retries=0", "--workers=1"],
+      "console": "integratedTerminal",
+      "env": { "PWDEBUG": "0" }
+    },
+    {
+      "name": "Debug Current File",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["playwright", "test", "--headed", "--retries=0", "--workers=1", "${file}"],
+      "console": "integratedTerminal",
+      "env": { "PWDEBUG": "0" }
+    },
+    {
+      "name": "Debug Selected Test (grep)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["playwright", "test", "--headed", "--retries=0", "--workers=1", "-g", "${input:testFilter}"],
+      "console": "integratedTerminal",
+      "env": { "PWDEBUG": "0" }
+    },
+    {
+      "name": "Debug with Playwright Inspector",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["playwright", "test", "--headed", "--retries=0", "--workers=1", "-g", "${input:testFilter}"],
+      "console": "integratedTerminal",
+      "env": { "PWDEBUG": "1" }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "testFilter",
+      "type": "promptString",
+      "description": "Test name filter (e.g. Homepage, Module 4, golden-top, Cart — filled)",
+      "default": "Homepage"
+    }
+  ]
+}

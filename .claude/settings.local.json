@@ -14,7 +14,13 @@
       "Bash(grep desktop-chrome.*failed)",
       "Bash(node -e \":*)",
       "Bash(npx tsc:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(node -e ':*)",
+      "Bash(dir playwright-report.rar)",
+      "Bash(unrar x:*)",
+      "Bash(7z x:*)",
+      "Bash(grep -E \"failed|flaky|passed|skipped$\")",
+      "Bash(grep -E \"\\(failed$|^\\\\s{4}\\\\[\\)\")"
     ]
   }
 }

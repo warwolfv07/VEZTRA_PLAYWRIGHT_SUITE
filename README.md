@@ -38,6 +38,79 @@ npx playwright test -g "TC-001"
 npx playwright show-report
 ```
 
+## Debugging
+
+### Watch a test run in the browser (headed mode)
+
+Add `--headed` to see Chrome open and execute each step visually:
+
+```bash
+# Watch a single test (grep matches test names, not step IDs)
+npx playwright test --headed --workers=1 -g "Homepage"
+
+# Watch a whole module
+npx playwright test --headed --workers=1 -g "Module 4"
+
+# Watch a specific product test
+npx playwright test --headed --workers=1 -g "golden-top.*Desktop"
+
+# Shorthand via npm script
+npm run test:headed -- -g "Homepage"
+```
+
+> **Note:** The `-g` flag matches against `test()` names, not step IDs. Use patterns like `"Homepage"`, `"Module 5"`, `"Cart — filled"`, `"Razorpay"`, or `"golden-top"`. To find exact test names, run `npx playwright test --list`.
+
+### Playwright Inspector (step-through debugger)
+
+Set `PWDEBUG=1` to launch the Playwright Inspector — a GUI that lets you step through each action, inspect selectors, and see the page state at every point:
+
+```bash
+# Windows CMD
+set PWDEBUG=1 && npx playwright test --headed --workers=1 -g "Homepage"
+
+# Windows PowerShell
+$env:PWDEBUG=1; npx playwright test --headed --workers=1 -g "Homepage"
+
+# Linux / macOS
+PWDEBUG=1 npx playwright test --headed --workers=1 -g "Homepage"
+
+# Shorthand
+npm run test:debug -- -g "Homepage"
+```
+
+The Inspector window shows each Playwright call. Click **Step Over** to advance one action at a time, or **Resume** to continue to the next breakpoint.
+
+### VS Code debugging with breakpoints
+
+The project includes `.vscode/launch.json` with four debug configurations. Open VS Code, go to **Run and Debug** (Ctrl+Shift+D), and pick one:
+
+| Configuration | What it does |
+|---|---|
+| **Debug All Tests (headed)** | Runs the full suite in a visible browser. VS Code breakpoints work. |
+| **Debug Current File** | Runs the currently open `.spec.ts` file headed. |
+| **Debug Selected Test (grep)** | Prompts for a test name/ID (e.g. `TC-001` or `Module 4`), runs only that test headed. |
+| **Debug with Playwright Inspector** | Same as above but also opens the Playwright Inspector for step-by-step control. |
+
+To use breakpoints:
+
+1. Open `veztra.spec.ts` in VS Code
+2. Click the gutter to set a red breakpoint on any line
+3. Pick a debug configuration from the dropdown and press **F5**
+4. Chrome opens, and execution pauses at your breakpoint
+5. Use the VS Code debug toolbar to step over/into/out, inspect variables, and continue
+
+### VS Code Playwright extension (recommended)
+
+Install the **[Playwright Test for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)** extension for the best experience:
+
+- Green play buttons appear next to each `test()` block — click to run or debug a single test
+- Right-click a test to **Debug Test** (uses breakpoints) or **Run Test** (headed/headless)
+- Built-in test explorer sidebar with pass/fail status
+- **Show Browser** checkbox to toggle headed mode
+- **Pick Locator** tool to find selectors interactively on the live page
+
+Install from VS Code: `Ctrl+Shift+X` → search "Playwright Test for VS Code" → Install.
+
 ## Project Structure
 
 ```

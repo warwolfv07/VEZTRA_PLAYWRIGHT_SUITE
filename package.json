@@ -2,7 +2,14 @@
   "name": "veztra-playwright-suite",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:desktop": "playwright test --project=desktop-chrome",
+    "test:mobile": "playwright test --project=mobile-iphone",
+    "test:headed": "playwright test --headed --retries=0 --workers=1",
+    "test:debug": "set PWDEBUG=1 && playwright test --headed --retries=0 --workers=1",
+    "report": "playwright show-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
