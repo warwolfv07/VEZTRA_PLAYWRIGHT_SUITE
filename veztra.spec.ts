@@ -367,8 +367,10 @@ test.describe('Module 1 – Homepage', () => {
       if (isMobileProject()) await closeMobileNav(page);
     });
     await S('TC-003', 'Hero banner image renders', async () => {
-      await expect(page.locator('img[src*="banner"]').filter({visible: true}).first()).toBeVisible();
+      const bannerImage = await page.locator('img[class = "attachment-full size-full wp-image-2147"]')
+      await expect(bannerImage).toBeVisible(); 
     });
+
     await S('TC-004', 'Featured products section shows ≥5 products', async () => {
       expect(await page.locator('.product').count()).toBeGreaterThanOrEqual(5);
     });
