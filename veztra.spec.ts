@@ -367,37 +367,59 @@ test.describe('Module 1 – Homepage', () => {
       if (isMobileProject()) await closeMobileNav(page);
     });
     await S('TC-003', 'Hero banner image renders', async () => {
-      const bannerImage = await page.locator('img[class = "attachment-full size-full wp-image-2147"]')
+      let bannerImage
+      if(isMobileProject()){
+         bannerImage = await page.locator('img[class = "attachment-full size-full wp-image-2168"]')
+      }else{
+         bannerImage = await page.locator('img[class = "attachment-full size-full wp-image-2147"]')
+      }
       await expect(bannerImage).toBeVisible(); 
     });
 
-    await S('TC-004', 'Featured products section shows ≥5 products', async () => {
+    await S('TC-004', 'Cart icon present in header', async () => {
+      // Kitify cart icon uses .header-cart-box or .kitify-nova-cart
+      //await expect(page.locator('.kitify-nova-cart__icon')).toBeVisible();
+      
+      let cartIcon
+      if(isMobileProject()){
+          const headerContainer = await page.locator('[data-elementor-type="header"]');
+          cartIcon = await headerContainer.locator('.kitify-nova-cart__icon');
+        }
+        else{
+          const visibleContainer = await page.locator('.elementor-sticky--active');
+          cartIcon = await visibleContainer.locator('.kitify-nova-cart__icon');
+        } 
+        await expect(cartIcon).toBeVisible();
+
+    });
+
+    await S('TC-005', 'Featured products section shows ≥5 products', async () => {
       expect(await page.locator('.product').count()).toBeGreaterThanOrEqual(5);
     });
-    await S('TC-005', 'Sale badges displayed on discounted products', async () => {
+    await S('TC-006', 'Sale badges displayed on discounted products', async () => {
       await page.locator('.onsale').first().scrollIntoViewIfNeeded();
       await expect(page.locator('.onsale').filter({visible: true}).first()).toBeVisible();
     });
-    await S('TC-006', 'Footer has navigation links and support email', async () => {
+    await S('TC-007', 'Footer has navigation links and support email', async () => {
       // Kitify footer is Elementor divs — scroll to bottom to render it
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(800);
       // Scroll again in case footer has lazy-loaded more content
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(500);
-      // Look for footer links anywhere on page (not scoped to <footer> element)
-      await expect(page.getByRole('link', { name: /FAQs/i }).last()).toBeVisible({ timeout: NAV_TIMEOUT });
-      await expect(page.getByText(/support@veztra\.in/i).last()).toBeVisible({ timeout: NAV_TIMEOUT });
+      
+      const footerlabels = ['Return & Exchange Policy', 'Privacy Policy','Terms & Conditions','Refund Policy','support@veztra.in']
+      for(const label of footerlabels){
+        const footerLabel = await page.getByRole('link', { name: label , exact: true});
+        await expect(footerLabel).toBeVisible();
+      }
     });
-    await S('TC-007', 'Cart icon present in header', async () => {
-      // Kitify cart icon uses .header-cart-box or .kitify-nova-cart
-      await expect(page.locator('.header-cart-box, .kitify-nova-cart, a[href*="cart"], [class*="cart-icon"]').first()).toBeVisible();
-    });
+    
     await S('TC-008', '"Free Shipping" trust badge visible', async () => {
       // Scroll down to trust badges section which may be below the fold
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.7));
       await page.waitForTimeout(500);
-      await expect(page.getByText('Free Shipping', {exact: true}).filter({visible: true}).first()).toBeVisible();
+      await expect(page.getByText('Free Shipping', {exact: true}).filter({visible: true})).toBeVisible();
     });
   });
 });
