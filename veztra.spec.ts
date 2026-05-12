@@ -436,33 +436,57 @@ test.describe('Module 2A – Navigation (Desktop)', () => {
 
     await S('TC-009', 'Logo click from /shop/ returns to homepage', async () => {
       await page.goto(SHOP_URL, { waitUntil: 'domcontentloaded' });
-      // Navigate directly — logo click intercepted by Elementor overlays
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await expect(page).toHaveURL(new RegExp(BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+      const visibleContainer = await page.locator('.elementor-sticky');
+      const logo = await visibleContainer.getByRole('link', { name: 'VEZTRA LUXE PVT LTD' });
+      await logo.click();
+      await expect(page).toHaveURL(BASE_URL);
     });
+
     await S('TC-010', 'COLLECTION link navigates to /shop/', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await page.getByRole('link', { name: /COLLECTION/i }).first().click();
+      await page.goto(BASE_URL);
+      const NavLink = await page.getByRole('link', { name: 'COLLECTION', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/shop/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Collection', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/shop/);
     });
     await S('TC-011', 'ABOUT link navigates to /about/', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await page.getByRole('link', { name: /ABOUT/i }).first().click();
+      await page.goto(BASE_URL,{ waitUntil: 'domcontentloaded' });
+      const NavLink = await page.getByRole('link', { name: 'ABOUT', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/about/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'About Us', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/about/);
     });
     await S('TC-012', 'CONTACT link navigates to /contact/', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await page.getByRole('link', { name: /CONTACT/i }).first().click();
+      await page.goto(BASE_URL,{ waitUntil: 'domcontentloaded' });
+      const NavLink = await page.getByRole('link', { name: 'CONTACT', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/contact/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Contact Us', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/contact/);
     });
     await S('TC-013', 'Footer Privacy Policy link navigates correctly', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await page.getByRole('link', { name: /Privacy Policy/i }).first().click();
+      await page.goto(BASE_URL,{ waitUntil: 'domcontentloaded' });
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Privacy Policy', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/privacy-policy/);
     });
     await S('TC-014', 'Footer FAQs link navigates to /faqs/', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await page.getByRole('link', { name: /FAQs/i }).click();
+      await page.goto(BASE_URL,{ waitUntil: 'domcontentloaded' });
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'FAQs', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/faqs/);
     });
     await S('TC-015', 'Breadcrumb on product page contains "Home"', async () => {
@@ -490,34 +514,64 @@ test.describe('Module 2B – Navigation (Mobile)', () => {
     test.skip(!isMobileProject(), 'Mobile-only test — skipped on desktop-chrome');
     // Viewport already set by mobile-iphone project config
 
-    await S('TC-M01', '[Mobile] Logo visible in header', async () => {
-      await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await revealElementorContent(page);
-      await expect(page.locator('img[alt*="VEZTRA"]').filter({visible: true}).first()).toBeVisible();
+    await S('TC-M01', '[Mobile] Logo click from /shop/ returns to homepage', async () => {
+      await page.goto(SHOP_URL, { waitUntil: 'domcontentloaded' });
+      const visibleContainer = await page.locator('[data-elementor-type="header"]');
+      const logo = await visibleContainer.getByRole('link', { name: 'VEZTRA LUXE PVT LTD' });
+      await logo.click();
+      await expect(page).toHaveURL(BASE_URL);
     });
-    await S('TC-M02', '[Mobile] COLLECTION nav link accessible', async () => {
+    await S('TC-M02', '[Mobile] COLLECTION nav link navigates to /shop/', async () => {
       await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
       await openMobileNav(page);
-      await expect(page.getByRole('link', { name: /COLLECTION/i }).first()).toBeVisible();
+      const NavLink = await page.getByRole('link', { name: 'COLLECTION', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/shop/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Collection', exact: true });
+      await FooterNavLink.click();
+      await expect(page).toHaveURL(/\/shop/);
+
     });
-    await S('TC-M03', '[Mobile] COLLECTION link navigates to /shop/', async () => {
+    await S('TC-M03', '[Mobile] ABOUT link navigates to /about/', async () => {
       // Navigate directly — mobile menu overlays can intercept click events
       await page.goto(`${BASE_URL}/shop/`, { waitUntil: 'domcontentloaded' });
-      await expect(page).toHaveURL(/\/shop/);
-    });
-    await S('TC-M04', '[Mobile] ABOUT link navigates to /about/', async () => {
-      await page.goto(`${BASE_URL}/about/`, { waitUntil: 'domcontentloaded' });
+      await openMobileNav(page);
+      const NavLink = await page.getByRole('link', { name: 'ABOUT', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/about/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'About Us', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/about/);
     });
-    await S('TC-M05', '[Mobile] CONTACT link navigates to /contact/', async () => {
-      await page.goto(`${BASE_URL}/contact/`, { waitUntil: 'domcontentloaded' });
+    await S('TC-M04', '[Mobile] CONTACT link navigates to /contact/', async () => {
+      await page.goto(`BASE_URL`, { waitUntil: 'domcontentloaded' });
+      await openMobileNav(page);
+      const NavLink = await page.getByRole('link', { name: 'CONTACT', exact: true });
+      await NavLink.click();
+      await expect(page).toHaveURL(/\/contact/);
+      await page.waitForLoadState('domcontentloaded');
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Contact Us', exact: true });
+      await FooterNavLink.click();
       await expect(page).toHaveURL(/\/contact/);
     });
-    await S('TC-M06', '[Mobile] Cart icon visible and tappable', async () => {
+    await S('TC-M05', '[Mobile] Footer Privacy Policy link navigates correctly', async () => {
+      await page.goto(`BASE_URL`, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'Privacy Policy', exact: true });
+      await FooterNavLink.click();
+      await expect(page).toHaveURL(/\/privacy-policy/);
+    });
+    await S('TC-M06', '[Mobile] Footer FAQs link navigates to /faqs/', async () => {
       await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-      await expect(page.locator('.header-cart-box, .kitify-nova-cart, a[href*="cart"]').first()).toBeVisible();
-      await page.locator('.header-cart-box, .kitify-nova-cart, a[href*="cart"]').first().click();
-      await page.waitForTimeout(ANIM_WAIT);
+      await page.evaluate(()=> window.scrollTo(0, document.body.scrollHeight));
+      const FooterNavLink = await page.getByRole('link', { name: 'FAQs', exact: true });
+      await FooterNavLink.click();
+      await expect(page).toHaveURL(/\/faqs/);
     });
     await S('TC-M07', '[Mobile] Footer nav links reachable by scrolling', async () => {
       await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
